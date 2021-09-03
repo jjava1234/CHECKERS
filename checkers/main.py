@@ -4,6 +4,7 @@ from checker.board import Board
 
 def main():
     run = True
+    board = Board()
     while run: 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -11,12 +12,10 @@ def main():
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()                          
-                Board.validate_move(pos[0]/90, pos[1]/90)
+                board.select(pos[0], pos[1])
     
-
-
-        pygame.display.update()                
         Game()    
+        pygame.display.update()                
 
     pygame.quit()
 
