@@ -21,13 +21,13 @@ class Board():
             for col in range(self.cols):
                 if (row+1)%2 == col%2: 
                     if row < 3:
-                        self.board_layout[row].append(Piece(col, row, (255,0,0)))
+                        self.board_layout[row].append(Piece(col, row, (255,0,0), 1))
                     elif row > 4:
-                        self.board_layout[row].append(Piece(col, row, (0,0,0)))
+                        self.board_layout[row].append(Piece(col, row, (0,0,0), -1))
                     else: 
-                        self.board_layout[row].append("")
+                        self.board_layout[row].append(0)
                 else:
-                    self.board_layout[row].append("")
+                    self.board_layout[row].append(0)
         self.draw_pieces()
         
 
@@ -48,22 +48,35 @@ class Board():
         
         self.create_pieces()
 
-    def calc_moves_left(self, x, y):
-        pass
-        #for row in range(self.rows):
-            #for col in range(self.cols):
-                #if self.board_layout[y+1][x+1] 
-        #return valid_moves
+    def calc_moves_left(self, piece, x, y):
+        if piece.y not in (0,7) and piece.x != 0:
+            x = piece.x-1
+            y = piece.y+piece.dir   
+            piece = self.board_layout[y][x] 
+            if piece == 0: 
+                piece.valid_moves.append[y][x]
+            elif piece.dir not in (0,7) and x-1 != 0:
+                if piece.color == (0,0,0) and self.board_layout[y+piece.dir][x-1] == 0:
+                    piece.valid_moves.append[y][x]
+                    self.calc_moves_left(piece, x-1, y+piece.dir)
 
-    def calc_moves_right(self, piece, x, y):
-        pass
+     
+    def calc_moves_right(self, piece):
+        for row in range(self.rows):
+            for col in range(self.cols):
+                if piece.y not in (0,7) and piece.x != 7:  
+                    if not self.board_layout[piece.y+ piece.dir][piece.x+1]:
+                        
+
 
     def validate_move(self, piece, x, y):
         pass
     
     def select(self, x, y):
         if piece := self.board_layout[y//90][x//90] and self.game.turn == "red":
-            valid_moves = []
-            valid_moves += self.calc_moves_left(piece, x, y)
-            valid_moves += self.calc_moves_left(piece, x, y)
+            if (piece.x, piece.y) in piece.valid_moves:
+                return piece.valid_moves
 
+            self.calc_moves_left(piece)
+            self.calc_moves_right(piece)
+             
