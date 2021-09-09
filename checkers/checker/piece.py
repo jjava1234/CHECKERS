@@ -1,21 +1,20 @@
-import pygame
-class Piece():
-    def __init__(self, window, x, y, color, dir, size=30):
-        self.color = color
-        self.king = False
-        self.valid_moves = []
-        self.dir = dir #row direction
-        self.draw(window, x, y, color, 30)
-        self.update(x, y)
+from .constants import *
 
+class Piece():
+    def __init__(self, window, x, y, color, dir):
+        self.color = color
+        self.valid_moves = {}
+        self.king = False        
+        self.dir = dir #row direction
+        self.size = 30
+        self.update(x, y)
+        self.draw()
+    
     def update(self, x, y):
         self.x = x
         self.y = y
 
-    def draw(self, window, x, y, color, size):
-        pygame.draw.circle(window, (color), (x*90 +45, y*90 +45), size)        
-
-        
-
-        
-
+    def draw(self):
+        pygame.draw.circle(win, self.color, (self.x*90 +45, self.y*90 +45), self.size)        
+        if self.king:
+            win.blit(crown, ((self.x*90+45) - crown.get_width()//2, (self.y*90+45) - crown.get_height()//2))
